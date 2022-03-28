@@ -87,10 +87,7 @@ public class BoundsCheck : MonoBehaviour
     }//end LateUpdate
 
     //Draw the bounds in the scene pane
-    public void OnDrawGizmos()
-    {
-        
-    }
+  
 
 
 
