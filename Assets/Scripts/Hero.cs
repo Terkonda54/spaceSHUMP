@@ -41,11 +41,13 @@ public class Hero : MonoBehaviour
 
 
     GameManager gm; //reference to game manager
+    ObjectPool pool; //reference to object pool
 
     [Header("Ship Movement")]
     public float speed = 30;
     public float rollMult = -45;
     public float pitchMult = 30;
+
     [Space(10)]
     [Header("Projectile Settings")]
     public GameObject projectilePrefab;
@@ -55,7 +57,7 @@ public class Hero : MonoBehaviour
     [Space(10)]
 
     private GameObject lastTriggerGo; //reference to the last triggering game object
-   
+    [Header("Shield Settings")]
     [SerializeField] //show in inspector
     private float _shieldLevel = 1; //level for shields
     public int maxShield = 4; //maximum shield level
@@ -93,6 +95,7 @@ public class Hero : MonoBehaviour
     private void Start()
     {
         gm = GameManager.GM; //find the game manager
+        pool = ObjectPool.POOL; //find the object pool
     }//end Start()
 
         // Update is called once per frame (page 551)
@@ -114,7 +117,7 @@ public class Hero : MonoBehaviour
         //Allow the ship to fire
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            TempFire();
+            FireProjectile();
         } //end space 
 
     }//end Update()
@@ -148,12 +151,20 @@ public class Hero : MonoBehaviour
 
     }//end OnTriggerEnter()
 
-    void TempFire()
+     void FireProjectile()
     {
-        GameObject projGO = Instantiate<GameObject>(projectilePrefab);
-        projGO.transform.position = transform.position;
-        Rigidbody rb = projGO.GetComponent<Rigidbody>();
-        rb.velocity = Vector3.up * projectileSpeed;
+        //GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+
+        GameObject projGo = pool.GetObject();
+        
+        if(projGo != null)
+        {
+            projGo.transform.position = transform.position;
+            Rigidbody rb = projGo.GetComponent<Rigidbody>();
+            rb.velocity = Vector3.up * projectileSpeed;
+        }
+
+        
     }
 
     public void AddScore(int value)

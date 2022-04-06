@@ -68,11 +68,12 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        
         GameObject otherGO = collision.gameObject;
         if(otherGO.tag == "Projectile Hero")
         {
             Debug.Log("Enemy hit by Projectile Hero " + otherGO.name);
-            Destroy(otherGO);
+            otherGO.SetActive(false);
             Hero.SHIP.AddScore(score);
             Destroy(gameObject);
         }
@@ -80,5 +81,6 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("Enemy hit by NON Projectile Hero " + otherGO.name);
         }
+        
     }
 }
